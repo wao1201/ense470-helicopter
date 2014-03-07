@@ -5,6 +5,8 @@ ense470-helicopter
 
 Redmine Wiki: http://ense.gelowitz.org/redmine/projects/ense470-2014-cook-vicenzino-weiwang
 
+Karim's Bitbucket: https://bitbucket.org/naqvik/ense470-2014
+
 S/W Requirements:
 
     - The goal is to create an obstacle course on a landscape of your
