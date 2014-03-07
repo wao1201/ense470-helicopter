@@ -3,7 +3,7 @@ ense470-helicopter
 
 --- Milestone 1 ---
 
-Redmine Wiki: http://ense.gelowitz.org/redmine/projects/ense470-2014-cook-vicenzino-weiwang
+Redmine Wiki: http://ense.gelowitz.org/redmine/projects/ense470-2014-cook-vicenzino-weiwang/wiki
 
 Karim's Bitbucket: https://bitbucket.org/naqvik/ense470-2014
 
