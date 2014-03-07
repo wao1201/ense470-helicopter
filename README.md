@@ -4,6 +4,7 @@ ense470-helicopter
 --- Milestone 1 ---
 
 S/W Requirements:
+
     - The goal is to create an obstacle course on a landscape of your
       choosing (a model file) that your helicopter will fly through.
 
