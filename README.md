@@ -3,6 +3,8 @@ ense470-helicopter
 
 --- Milestone 1 ---
 
+Redmine Wiki: http://ense.gelowitz.org/redmine/projects/ense470-2014-cook-vicenzino-weiwang
+
 S/W Requirements:
 
     - The goal is to create an obstacle course on a landscape of your
