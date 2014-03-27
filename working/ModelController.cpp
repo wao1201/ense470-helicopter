@@ -37,8 +37,15 @@ bool ModelController::handle( const osgGA::GUIEventAdapter& ea,
 			case '0':
 				gameRender->setzero();
 				break;
+			case 'C': case 'c':
+				gameRender->centerjoystick();
+				break;
 			case 'p': case 'P':
-				if(!sr->getStatus()){sr->runScripts();}
+				if(!sr->getStatus())
+				{
+					sr->runScripts();
+					Constants::getInstance()->disableMouse = true; // disable mouse when run script
+				}
 				break;
 			case 'l': case 'L':
 				Logger::getInstance()->toggleLogging();

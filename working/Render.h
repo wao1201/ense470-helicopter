@@ -54,6 +54,7 @@ class Render{
 
 	  void setneutral();
 	  void setzero();
+	  void centerjoystick();
 
 	  void setJoystick(float theta, float phi);
 	  void updateDirection(float x, float y);
