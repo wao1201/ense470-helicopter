@@ -36,45 +36,11 @@ void Render::Game_Play(){
 	sr->setRender(this);
 	osg::ref_ptr<osg::Node> helicopter = osgDB::readNodeFile("Sikorsky2.osg");
 	osg::ref_ptr<osg::Node> ground = osgDB::readNodeFile("lz.osg");
+	//osg::ref_ptr<osg::Node> confetti = osgDB::readNodeFile("glsl_confetti.osgt");
 	osg::ref_ptr<osg::Node> avatar = osgDB::readNodeFile("avatar.osg");
 	osg::ref_ptr<osg::Node> cow = osgDB::readNodeFile("cow.osg");
 	osg::ref_ptr<osg::Node> dumptruck = osgDB::readNodeFile("dumptruck.osg");
 
-	osg::ref_ptr<osg::Node> torus1 = osgDB::readNodeFile("cube_mapped_torus.osgt");
-	osg::ref_ptr<osg::Node> torus2 = osgDB::readNodeFile("cube_mapped_torus.osgt");
-	osg::ref_ptr<osg::Node> torus3 = osgDB::readNodeFile("cube_mapped_torus.osgt");
-
-	helicopterTransform = new osg::PositionAttitudeTransform;
-	helicopterTransform->addChild(helicopter.get());
-	helicopterTransform->setPosition(osg::Vec3(0.0f, 0.0f, 0.0f));
-	helicopterTransform->setAttitude(osg::Quat((3.14/2), osg::Vec3d(1.0, 0.0, 0.0)));
-	osg::ref_ptr<ModelController> ctrler = new ModelController(helicopterTransform.get(),this);
-
-	groundTransform = new osg::PositionAttitudeTransform;
-	groundTransform->addChild(ground.get());
-	groundTransform->setPosition(osg::Vec3(0.0f, 0.0f, -100.0f));
-	groundTransform->setScale(osg::Vec3(100.0f, 100.0f, 1.0f));
-
-	osg::ref_ptr<osg::PositionAttitudeTransform> avatarTransform = new osg::PositionAttitudeTransform;
-	avatarTransform->addChild(avatar.get());
-	avatarTransform->setPosition(osg::Vec3(1700.0f,-8000.0f,0));
-	avatarTransform->setScale(osg::Vec3(100.0f,100.0f,100.0f));
-
-	osg::ref_ptr<osg::PositionAttitudeTransform> cowTransform = new osg::PositionAttitudeTransform;
-	cowTransform->addChild(cow.get());
-	cowTransform->setPosition(osg::Vec3(250.0f, -2000.0f, 50.0f));
-	cowTransform->setScale(osg::Vec3(20.0f, 20.0f, 20.0f));
-
-	osg::ref_ptr<osg::PositionAttitudeTransform> dumptruckTransform = new osg::PositionAttitudeTransform;
-	dumptruckTransform->addChild(dumptruck.get());
-	dumptruckTransform->setPosition(osg::Vec3(-500.0f, -4000.0f, 50.0f));
-	dumptruckTransform->setScale(osg::Vec3(20.0f, 20.0f, 20.0f));
-
-	modelPosition.set(helicopterTransform->getPosition());
-	modelVelocity.set(osg::Vec3f(0,0,0));
-
-	helicopterThrust = osg::Vec3f(0.0, 0.0, 0.0);
-/*
 	ball1  = new osg::ShapeDrawable;
 	ball1->setShape( new osg::Sphere(osg::Vec3(0.0f, 0.0f,0.0f), 25.0f));
 	ball1->setColor(osg::Vec4(0.0f,0.0f,1.0f,1.0f));
@@ -121,28 +87,34 @@ void Render::Game_Play(){
 	groundTransform = new osg::PositionAttitudeTransform;
 	groundTransform->addChild(ground.get());
 	groundTransform->setPosition(osg::Vec3(0.0f, 0.0f, -100.0f));
-	groundTransform->setScale(osg::Vec3(10.0f, 10.0f, 1.0f));
+	groundTransform->setScale(osg::Vec3(30.0f, 30.0f, 1.0f)); // then avatart and truck still stay on ground
 
-	//osg::ref_ptr<osg::PositionAttitudeTransform> confettiTransform = new osg::PositionAttitudeTransform;
-	//confettiTransform->addChild(confetti.get());
-	//confettiTransform->setPosition(osg::Vec3(-150.0f,-2500.0f,100));
-	//confettiTransform->setScale(osg::Vec3(100.0f,100.0f,100.0f));
-	/*
+	// add modles we picked
+	osg::ref_ptr<osg::PositionAttitudeTransform> avatarTransform = new osg::PositionAttitudeTransform;
+	avatarTransform->addChild(avatar.get());
+	avatarTransform->setPosition(osg::Vec3(1700.0f,-8000.0f,0));
+	avatarTransform->setScale(osg::Vec3(100.0f,100.0f,100.0f));
+	
 	osg::ref_ptr<osg::PositionAttitudeTransform> cowTransform = new osg::PositionAttitudeTransform;
 	cowTransform->addChild(cow.get());
-	cowTransform->setPosition(osg::Vec3(100.0f, -1500.0f, 50.0f));
+	cowTransform->setPosition(osg::Vec3(250.0f, -2000.0f, 50.0f));
 	cowTransform->setScale(osg::Vec3(20.0f, 20.0f, 20.0f));
+
+	osg::ref_ptr<osg::PositionAttitudeTransform> dumptruckTransform = new osg::PositionAttitudeTransform;
+	dumptruckTransform->addChild(dumptruck.get());
+	dumptruckTransform->setPosition(osg::Vec3(-500.0f, -4000.0f, 50.0f));
+	dumptruckTransform->setScale(osg::Vec3(20.0f, 20.0f, 20.0f));
 
 	modelPosition.set(helicopterTransform->getPosition());
 	modelVelocity.set(osg::Vec3f(0,0,0));
 
 	helicopterThrust = osg::Vec3f(0.0, 0.0, 0.0);
-	*/
+	
 
 	osg::ref_ptr<osg::Group> rootNode = new osg::Group;  //Create a group node
 	rootNode->addChild( groundTransform.get());
 	rootNode->addChild( helicopterTransform.get());
-	//rootNode->addChild(torusGroup.get());
+	rootNode->addChild(torusGroup.get());
 	//rootNode->addChild( confettiTransform.get());
 	rootNode->addChild( avatarTransform.get());
 	rootNode->addChild( cowTransform.get());
