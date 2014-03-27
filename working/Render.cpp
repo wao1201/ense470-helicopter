@@ -185,7 +185,9 @@ void Render::decreaseRotor()
 // set rotor force to neutral
 void Render::setneutral()
 {
-	rotorForce = 88290;
+	//rotorForce = 88290;
+	// set force for x, y, z axis
+	helicopterThrust = osg::Vec3f(helicopterThrust.x(),helicopterThrust.y(),Constants::getInstance()->helicopter->mass*Constants::getInstance()->gravity);
 }
 // set rotor force to zero
 void Render::setzero()
