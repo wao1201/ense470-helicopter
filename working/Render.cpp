@@ -97,12 +97,12 @@ void Render::Game_Play(){
 	
 	osg::ref_ptr<osg::PositionAttitudeTransform> cowTransform = new osg::PositionAttitudeTransform;
 	cowTransform->addChild(cow.get());
-	cowTransform->setPosition(osg::Vec3(250.0f, -2000.0f, 50.0f));
+	cowTransform->setPosition(osg::Vec3(250.0f, -2000.0f, 60.0f));
 	cowTransform->setScale(osg::Vec3(20.0f, 20.0f, 20.0f));
 
 	osg::ref_ptr<osg::PositionAttitudeTransform> dumptruckTransform = new osg::PositionAttitudeTransform;
 	dumptruckTransform->addChild(dumptruck.get());
-	dumptruckTransform->setPosition(osg::Vec3(-500.0f, -4000.0f, 50.0f));
+	dumptruckTransform->setPosition(osg::Vec3(-500.0f, -4000.0f, 100.0f));
 	dumptruckTransform->setScale(osg::Vec3(20.0f, 20.0f, 20.0f));
 
 	modelPosition.set(helicopterTransform->getPosition());
@@ -185,9 +185,9 @@ void Render::decreaseRotor()
 // set rotor force to neutral
 void Render::setneutral()
 {
-	//rotorForce = 88290;
+	rotorForce = 88290;
 	// set force for x, y, z axis
-	helicopterThrust = osg::Vec3f(helicopterThrust.x(),helicopterThrust.y(),Constants::getInstance()->helicopter->mass*Constants::getInstance()->gravity);
+	// helicopterThrust = osg::Vec3f(helicopterThrust.x(),helicopterThrust.y(),Constants::getInstance()->helicopter->mass*Constants::getInstance()->gravity);
 }
 // set rotor force to zero
 void Render::setzero()

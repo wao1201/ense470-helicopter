@@ -10,6 +10,7 @@
 #include "ModelController.h"
 #include "ScriptRunner.h"
 #include "Logger.h"
+#include <fstream>
 
 //Override
 bool ModelController::handle( const osgGA::GUIEventAdapter& ea,
@@ -43,11 +44,16 @@ bool ModelController::handle( const osgGA::GUIEventAdapter& ea,
 			case 'p': case 'P':
 				if(!sr->getStatus())
 				{
+					ifstream test;
+					test.open("testScript.txt");
+					sr->parseScript(test);
+
 					sr->runScripts();
 					Constants::getInstance()->disableMouse = true; // disable mouse when run script
 				}
 				break;
 			case 'l': case 'L':
+				//cout<<"Logger::getInstance()->toggleLogging()"<<endl;
 				Logger::getInstance()->toggleLogging();
 				break;
 			}

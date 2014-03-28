@@ -38,6 +38,11 @@ vector<Command> ScriptRunner::parseScript(ifstream & script)
 {
 	bool endFound = false;
 	vector<Command> actionList;
+
+	//script.open("testScript.txt");
+
+	cout<<"parsing script !!!"<<endl;
+
 	while(!endFound)
 	{
 		if(script.is_open())
