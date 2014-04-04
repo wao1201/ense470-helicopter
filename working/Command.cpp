@@ -23,20 +23,24 @@ Command::Command(COMMAND_TYPE command, vector<float> parameters)
 bool Command::executeCommand(Render * render)
 {
 	bool done = false;
+	//cout<<commandName<<endl;
 	switch(commandName)
 	{
 	case set_joystick:
+		//cout<<commandName<<endl;
 		cout << printf("setting joystick to %f degrees, %f degrees\n", params[0],params[1]);
 		render->setJoystick(params[0],params[1]);
 		return true;
 		break;
 	case centre_joystick:
+		//cout<<commandName<<endl;
 		cout << "centering the joystick\n";
-		render->setJoystick(0,0);
+		render->centerjoystick();
 		return true;
 		break;
 	case throttle:
-		cout << "setting the throttle to" << params[0] << endl;
+		//cout<<commandName<<endl;
+		cout << "setting the throttle to " << params[0] << endl;
 		render->setThrottle(params[0]);
 		return true;
 		break;
@@ -44,6 +48,7 @@ bool Command::executeCommand(Render * render)
 		return true;
 		break;
 	case delay:
+		//cout<<commandName<<endl;
 		if(sleepThread == NULL) {
 			sleepThread = new SleepThread(params[0]);
 			sleepThread->start();

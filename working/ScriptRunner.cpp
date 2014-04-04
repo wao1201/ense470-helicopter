@@ -37,7 +37,7 @@ void ScriptRunner::setActions(vector<Command> newActions)
 vector<Command> ScriptRunner::parseScript(ifstream & script)
 {
 	bool endFound = false;
-	vector<Command> actionList;
+	//vector<Command> actionList;
 
 	//script.open("testScript.txt");
 
@@ -61,6 +61,7 @@ vector<Command> ScriptRunner::parseScript(ifstream & script)
 			input = input.substr(input.find_first_of(" ") +1,input.length());
 			while(input.length() > 0)
 			{
+				//cout<<input<<endl;
 				if(input[0] == '#') break;
 				int spaceloc = input.find_first_of(" \n");
 				string param = input.substr(0,(spaceloc>=0)?spaceloc:input.length());
@@ -74,6 +75,9 @@ vector<Command> ScriptRunner::parseScript(ifstream & script)
 				params.push_back(parameter);
 			}
 			COMMAND_TYPE commandType = error;
+
+			cout<<commandName<<endl;
+
 			if(commandName == "set_joystick")
 			{
 				commandType = set_joystick;
@@ -93,11 +97,13 @@ vector<Command> ScriptRunner::parseScript(ifstream & script)
 			if(commandType != error)
 			{
 				Command command = Command(commandType,params);
-				actionList.push_back(command);
+				//actionList.push_back(command);
+				actions.push_back(command);
 			}
 		}
 	}
-	return actionList;
+	//return actionList;
+	return actions;
 }
 
 void ScriptRunner::runScripts()
@@ -112,6 +118,8 @@ void ScriptRunner::runScripts()
 
 void ScriptRunner::doCommand()
 {
+	//cout<<"working? docommand"<<endl;
+	//cout<<cactions.size()<<endl;
 	if(cactions.size() >0){
 		bool erase = cactions.front().executeCommand(gameRender);
 		if(erase)
