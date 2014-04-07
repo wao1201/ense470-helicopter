@@ -53,7 +53,6 @@ bool ModelController::handle( const osgGA::GUIEventAdapter& ea,
 				}
 				break;
 			case 'l': case 'L':
-				//cout<<"Logger::getInstance()->toggleLogging()"<<endl;
 				Logger::getInstance()->toggleLogging();
 				break;
 			}

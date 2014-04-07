@@ -19,7 +19,7 @@
 	{
 		this->gravity = (float)9.81;
 		this->helicopter = new HelicopterConfig();
-		this->maxThrottle = 100.0;
+		this->maxThrottle = 23;
 		this->mouseDown = false;
 		this->maxTheta = 15;
 		this->frictionConstant = calculateFrictionConstant(maxTheta);
