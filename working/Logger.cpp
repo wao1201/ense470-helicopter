@@ -38,7 +38,7 @@ void Logger::openLog()
 	//strcpy(charLog, logFileName.c_str());
 	//logFile = fopen(charLog,"a");
 
-	//cout<<"Logging status..."<<endl;
+	cout<<"Logging status..."<<endl;
 	logFile = fopen("helicopterLog.txt","a");
 }
 void Logger::closeLog()

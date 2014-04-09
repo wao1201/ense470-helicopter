@@ -25,6 +25,11 @@
 #include <iostream>
 #include "Constants.h"
 #include <osg/ShapeDrawable>
+#include <osgText/Text>
+#include <osg/Geode>
+#include "hud.h"
+#include "util.h"
+
 class Render{
   private:
 	  osg::ref_ptr<osg::PositionAttitudeTransform> helicopterTransform;
@@ -42,6 +47,7 @@ class Render{
 	  float aGrav;
 	  float rotorForce;
 	  osg::Vec3f helicopterThrust;
+
   public:
 	  Render() : last(0) {
 		  aGrav = (Constants::getInstance()->gravity)*(-1);
@@ -56,6 +62,13 @@ class Render{
 	  void setzero();
 	  void centerjoystick();
 
+	  void roll(float angle);
+	  void pitch(float angle);
+	  void yaw(float angle);
+
+	  	// hud initialize
+	  Hud hud;
+
 	  void setJoystick(float theta, float phi);
 	  void updateDirection(float x, float y);
 	  void setGravity(float gravity);
@@ -65,6 +78,8 @@ class Render{
 	  bool detectCollision(osg::BoundingSphere& bs1, osg::BoundingSphere& bs2);
 	  void changeBallColour(osg::ref_ptr<osg::PositionAttitudeTransform>& ball);
 	  std::string f2s(float num);
+
+	  struct Orientation helicopterOrientation;
 };
 
 #endif

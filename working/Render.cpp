@@ -30,8 +30,12 @@
 #include <osgGA/NodeTrackerManipulator>
 #include <osg/FrameStamp>
 
-
 void Render::Game_Play(){
+
+	//hud
+	hud.initializeHudText();
+	osg::Camera * hudCamera;
+
 	ScriptRunner * sr = ScriptRunner::getInstance();
 	sr->setRender(this);
 	osg::ref_ptr<osg::Node> helicopter = osgDB::readNodeFile("Sikorsky2.osg");
@@ -82,6 +86,15 @@ void Render::Game_Play(){
 	helicopterTransform->setPosition(osg::Vec3(0.0f, 0.0f, 0.0f));
 	helicopterTransform->setAttitude(osg::Quat((3.14/2), osg::Vec3d(1.0, 0.0, 0.0)));
 
+	// rotate model
+	helicopterTransform->setAttitude( 	 	
+		osg::Quat( 	 	
+			osg::DegreesToRadians(90.0f),osg::Vec3f(1,0,0), 	 	
+	        osg::DegreesToRadians(0.0f),osg::Vec3f(0,0,1), 	 	
+	        osg::DegreesToRadians(0.0f),osg::Vec3f(0,1,0) 	 	
+	        ) 	 	
+	);
+
 	osg::ref_ptr<ModelController> ctrler = new ModelController(helicopterTransform.get(),this);
 
 	groundTransform = new osg::PositionAttitudeTransform;
@@ -109,8 +122,10 @@ void Render::Game_Play(){
 	modelVelocity.set(osg::Vec3f(0,0,0));
 
 	helicopterThrust = osg::Vec3f(0.0, 0.0, 0.0);
-	
 
+	//hud
+	hudCamera = hud.getHudCamera();
+	
 	osg::ref_ptr<osg::Group> rootNode = new osg::Group;  //Create a group node
 	rootNode->addChild( groundTransform.get());
 	rootNode->addChild( helicopterTransform.get());
@@ -119,6 +134,9 @@ void Render::Game_Play(){
 	rootNode->addChild( avatarTransform.get());
 	rootNode->addChild( cowTransform.get());
 	rootNode->addChild( dumptruckTransform.get());
+
+	//hud
+	rootNode->addChild(hudCamera);
 	
 	viewer.addEventHandler( ctrler.get());
 
@@ -279,6 +297,22 @@ bool Render::detectCollision(osg::BoundingSphere& bs1, osg::BoundingSphere& bs2)
 		return false;
 }
 
+// milestone 3
+void Render::roll(float angle)
+{
+	helicopterOrientation.y_theta += angle;
+}
+
+void Render::pitch(float angle)
+{
+	helicopterOrientation.x_theta += angle;
+}
+
+void Render::yaw(float angle)
+{
+	helicopterOrientation.z_theta += angle;
+}
+
 void Render::updateGamePlay()
 {
 	if (Render::detectCollision(osg::BoundingSphere(helicopterTransform->getBound()), osg::BoundingSphere(tor1Tr->getBound())))
@@ -331,9 +365,27 @@ void Render::updateGamePlay()
 	logger->log("X Vel: " + f2s(xVel) + " Y Vel: " + f2s(yVel) +" Z Vel: " + f2s(zVel));
 	logger->log("X Acc: " + f2s(xAcc) + " Y Acc: " + f2s(yAcc) +" Z Acc: " + f2s(zAcc));
 	logger->log("Throttle Position: " + f2s(rotorForce/Constants::getInstance()->baseThrottle));
+
+	//hud
+	hud.setDisplayPos("X Pos: " + f2s(xPos) + " Y Pos: " + f2s(yPos) + " Z Pos: " + f2s(zPos));
+	//hud.setDisplaySpeed("X Vel: " + f2s(xVel) + " Y Vel: " + f2s(yVel) +" Z Vel: " + f2s(zVel));
+	//hud.setDisplayAcce("X Acc: " + f2s(xAcc) + " Y Acc: " + f2s(yAcc) +" Z Acc: " + f2s(zAcc));
+	//hud.setDisplayThrust("Throttle Position: " + f2s(rotorForce/Constants::getInstance()->baseThrottle));
+	//hud.setDisplayOrientation("Orientation in X: " + f2s(90 + helicopterOrientation.x_theta) + " Y: " + f2s(helicopterOrientation.y_theta) + " Z: " + f2s(helicopterOrientation.z_theta));
+
 	modelPosition.set(osg::Vec3d(xPos, yPos, zPos));
 	modelVelocity.set(osg::Vec3f(xVel, yVel, zVel));
-	helicopterTransform->setPosition(modelPosition); 
+	helicopterTransform->setPosition(modelPosition);
+
+	// orientation
+	helicopterTransform->setAttitude( 	 	
+		osg::Quat( 	 	
+			osg::DegreesToRadians(90 + helicopterOrientation.x_theta),osg::Vec3f(1,0,0), 	 	
+	        osg::DegreesToRadians(helicopterOrientation.y_theta),osg::Vec3f(0,1,0), 	 	
+	        osg::DegreesToRadians(helicopterOrientation.z_theta),osg::Vec3f(0,0,1) 	 	
+	        ) 	 	
+	);
+
 	if(ScriptRunner::getInstance()->getStatus()){ ScriptRunner::getInstance()->doCommand(); }
 	
 }
@@ -344,6 +396,7 @@ void Render::startMoving()
 }
 
 std::string Render::f2s(float num){
+
 	stringstream ss (stringstream::in | stringstream::out);
 
 	ss << num;
