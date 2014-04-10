@@ -20,7 +20,7 @@
 #include "ModelController.h"
 #include "Render.h"
 #include "TimerHandler.h"
-#include "Trevor/Vector2.h"
+#include "Vector2.h"
 #include "Constants.h"
 #include <osg/ShapeDrawable>
 #include <iostream>
@@ -36,14 +36,15 @@ void Render::Game_Play(){
 	hud.initializeHudText();
 	osg::Camera * hudCamera;
 
+
 	ScriptRunner * sr = ScriptRunner::getInstance();
 	sr->setRender(this);
 	osg::ref_ptr<osg::Node> helicopter = osgDB::readNodeFile("Sikorsky2.osg");
 	osg::ref_ptr<osg::Node> ground = osgDB::readNodeFile("lz.osg");
 	//osg::ref_ptr<osg::Node> confetti = osgDB::readNodeFile("glsl_confetti.osgt");
-	osg::ref_ptr<osg::Node> avatar = osgDB::readNodeFile("avatar.osg");
-	osg::ref_ptr<osg::Node> cow = osgDB::readNodeFile("cow.osg");
-	osg::ref_ptr<osg::Node> dumptruck = osgDB::readNodeFile("dumptruck.osg");
+	//osg::ref_ptr<osg::Node> avatar = osgDB::readNodeFile("avatar.osg");
+	//osg::ref_ptr<osg::Node> cow = osgDB::readNodeFile("cow.osg");
+	//osg::ref_ptr<osg::Node> dumptruck = osgDB::readNodeFile("dumptruck.osg");
 
 	ball1  = new osg::ShapeDrawable;
 	ball1->setShape( new osg::Sphere(osg::Vec3(0.0f, 0.0f,0.0f), 25.0f));
@@ -103,6 +104,7 @@ void Render::Game_Play(){
 	groundTransform->setScale(osg::Vec3(30.0f, 30.0f, 1.0f)); // then avatart and truck still stay on ground
 
 	// add modles we picked
+	/*
 	osg::ref_ptr<osg::PositionAttitudeTransform> avatarTransform = new osg::PositionAttitudeTransform;
 	avatarTransform->addChild(avatar.get());
 	avatarTransform->setPosition(osg::Vec3(1700.0f,-8000.0f,0));
@@ -117,6 +119,7 @@ void Render::Game_Play(){
 	dumptruckTransform->addChild(dumptruck.get());
 	dumptruckTransform->setPosition(osg::Vec3(-500.0f, -4000.0f, 100.0f));
 	dumptruckTransform->setScale(osg::Vec3(20.0f, 20.0f, 20.0f));
+	*/
 
 	modelPosition.set(helicopterTransform->getPosition());
 	modelVelocity.set(osg::Vec3f(0,0,0));
@@ -131,9 +134,9 @@ void Render::Game_Play(){
 	rootNode->addChild( helicopterTransform.get());
 	rootNode->addChild(torusGroup.get());
 	//rootNode->addChild( confettiTransform.get());
-	rootNode->addChild( avatarTransform.get());
-	rootNode->addChild( cowTransform.get());
-	rootNode->addChild( dumptruckTransform.get());
+	//rootNode->addChild( avatarTransform.get());
+	//rootNode->addChild( cowTransform.get());
+	//rootNode->addChild( dumptruckTransform.get());
 
 	//hud
 	rootNode->addChild(hudCamera);
@@ -367,7 +370,7 @@ void Render::updateGamePlay()
 	logger->log("Throttle Position: " + f2s(rotorForce/Constants::getInstance()->baseThrottle));
 
 	//hud
-	hud.setDisplayPos("X Pos: " + f2s(xPos) + " Y Pos: " + f2s(yPos) + " Z Pos: " + f2s(zPos));
+	hud.updateText(xPos, yPos, zPos, xVel, yVel, zVel, xAcc, yAcc, zAcc, 0,0,0, axForce, ayForce, axForce);
 	//hud.setDisplaySpeed("X Vel: " + f2s(xVel) + " Y Vel: " + f2s(yVel) +" Z Vel: " + f2s(zVel));
 	//hud.setDisplayAcce("X Acc: " + f2s(xAcc) + " Y Acc: " + f2s(yAcc) +" Z Acc: " + f2s(zAcc));
 	//hud.setDisplayThrust("Throttle Position: " + f2s(rotorForce/Constants::getInstance()->baseThrottle));
