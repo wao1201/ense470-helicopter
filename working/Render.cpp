@@ -33,8 +33,6 @@
 void Render::Game_Play(){
 	crash = false;
 	friction = true;
-	phi=theta=0;
-
 
 	//hud
 	hud.initializeHudText();
@@ -394,8 +392,7 @@ void Render::updateGamePlay()
 			crash=true;
 
 		zPos = 1;
-		zVel *= 0.4;
-		zVel = -zVel;
+		zVel *= 0;
 
 	}
 
@@ -427,7 +424,7 @@ void Render::updateGamePlay()
 	);
 	
 	// hud
-	hud.updateText(xPos, yPos, zPos, xVel, yVel, zVel, xAcc, yAcc, zAcc, helicopterOrientation.x_theta , helicopterOrientation.y_theta, helicopterOrientation.z_theta, axForce, ayForce, axForce);
+	hud.updateText(xPos, yPos, zPos, xVel, yVel, zVel, xAcc, yAcc, zAcc, helicopterOrientation.x_theta , helicopterOrientation.y_theta, helicopterOrientation.z_theta, axForce, ayForce, azForce);
 	
 	if(ScriptRunner::getInstance()->getStatus()){ ScriptRunner::getInstance()->doCommand(); }
 	
