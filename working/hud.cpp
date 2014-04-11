@@ -24,7 +24,7 @@ void Hud::initializeHudText()
     pos->setCharacterSize(20.0f);
     pos->setLayout( osgText::Text::LEFT_TO_RIGHT );
     pos->setText("0, 0, 0");
-    pos->setPosition(osg::Vec3(0,150,0));
+    pos->setPosition(osg::Vec3(0,100,0));
 	hudGeode->addDrawable(pos);
 
 	speed = new osgText::Text;
@@ -33,7 +33,7 @@ void Hud::initializeHudText()
     speed->setCharacterSize(20.0f);
     speed->setLayout( osgText::Text::LEFT_TO_RIGHT );
     speed->setText("0, 0, 0");
-    speed->setPosition(osg::Vec3(0,130,0));
+    speed->setPosition(osg::Vec3(0,80,0));
 	hudGeode->addDrawable(speed);
 
 	acce = new osgText::Text;
@@ -42,7 +42,7 @@ void Hud::initializeHudText()
     acce->setCharacterSize(20.0f);
     acce->setLayout( osgText::Text::LEFT_TO_RIGHT );
     acce->setText("0, 0, 0");
-    acce->setPosition(osg::Vec3(0,110,0));
+    acce->setPosition(osg::Vec3(0,60,0));
 	hudGeode->addDrawable(acce);
 
 	thrust = new osgText::Text;
@@ -51,7 +51,7 @@ void Hud::initializeHudText()
     thrust->setCharacterSize(20.0f);
     thrust->setLayout( osgText::Text::LEFT_TO_RIGHT );
     thrust->setText("0, 0, 0");
-    thrust->setPosition(osg::Vec3(0,90,0));
+    thrust->setPosition(osg::Vec3(0,40,0));
 	hudGeode->addDrawable(thrust);
 
 	orientation = new osgText::Text;
@@ -60,26 +60,26 @@ void Hud::initializeHudText()
     orientation->setCharacterSize(20.0f);
     orientation->setLayout( osgText::Text::LEFT_TO_RIGHT );
     orientation->setText("0, 0, 0");
-    orientation->setPosition(osg::Vec3(0,70,0));
+    orientation->setPosition(osg::Vec3(0,20,0));
 	hudGeode->addDrawable(orientation);
 	
-	text = new osgText::Text;
-    text->setFont(osgText::readFontFile("fonts/vera.ttf"));
-    text->setColor(osg::Vec4(255,255,255,1.0f));
-    text->setCharacterSize(20.0f);
-    text->setLayout( osgText::Text::LEFT_TO_RIGHT );
-    text->setText("helicopter controls: '1' to decrease rotor speed, '2' to increase rotor speed, '0' to set rotor speed to 0, '3' to set throttle to neutral, 'c' center joystick,  ");
-    text->setPosition(osg::Vec3(0,1000,0));
-	hudGeode->addDrawable(text);
+	helpinfo1 = new osgText::Text;
+    helpinfo1->setFont(osgText::readFontFile("fonts/vera.ttf"));
+    helpinfo1->setColor(osg::Vec4(255,255,255,1.0f));
+    helpinfo1->setCharacterSize(15.0f);
+    helpinfo1->setLayout( osgText::Text::LEFT_TO_RIGHT );
+    helpinfo1->setText("Helicopter controls: '1' to decrease rotor speed, '2' to increase rotor speed, '0' to set rotor speed to 0, '3' to set throttle to neutral, 'c' center joystick,  ");
+    helpinfo1->setPosition(osg::Vec3(0,1000,0));
+	hudGeode->addDrawable(helpinfo1);
 
-	text2 = new osgText::Text;
-    text2->setFont(osgText::readFontFile("fonts/vera.ttf"));
-    text2->setColor(osg::Vec4(255,255,255,1.0f));
-    text2->setCharacterSize(20.0f);
-    text2->setLayout( osgText::Text::LEFT_TO_RIGHT );
-    text2->setText("helicopter controls: '1' to decrease rotor speed, '2' to increase rotor speed, '0' to set rotor speed to 0, 'c' center joystick,  ");
-    text2->setPosition(osg::Vec3(0,980,0));
-	hudGeode->addDrawable(text2);
+	helpinfo2 = new osgText::Text;
+    helpinfo2->setFont(osgText::readFontFile("fonts/vera.ttf"));
+    helpinfo2->setColor(osg::Vec4(255,255,255,1.0f));
+    helpinfo2->setCharacterSize(15.0f);
+    helpinfo2->setLayout( osgText::Text::LEFT_TO_RIGHT );
+    helpinfo2->setText("Orientation controls: 'w' increase pitch, 'x' decrease pitch, 'a' roll left, 'd' roll right, '<-' yaw left, '->' yaw right ");
+    helpinfo2->setPosition(osg::Vec3(0,980,0));
+	hudGeode->addDrawable(helpinfo2);
 
     camera->addChild(hudGeode);
 
@@ -95,21 +95,11 @@ osg::Geode * Hud::getHudGeode()
     return hudGeode;
 }
 
-/*
-void Hud::setText(const std::string& hudText)
-{
-    text->setText(hudText);
-}*/
-
-void Hud::setPosition(osg::Vec3d position)
-{
-    text->setPosition(position);
-}
 
 std::string Hud::getPos(float x, float y, float z)
 {
 	std::stringstream ss (std::stringstream::in | std::stringstream::out);
-	ss << "Position (x, y, z): " <<std::setprecision(7) << x << " " << y << " " <<z;
+	ss << "Position (x, y, z): " <<std::setw(7)<<std::setprecision(7) << x << " " << y << " " <<z;
 	std::string str = ss.str();
 	return str;
 }
@@ -117,7 +107,7 @@ std::string Hud::getPos(float x, float y, float z)
 std::string Hud::getSpeed(float x, float y, float z)
 {
 	std::stringstream ss (std::stringstream::in | std::stringstream::out);
-	ss << "Velocity (x, y, z): " <<std::setprecision(7) << x << " " << y << " " <<z;
+	ss << "Velocity (x, y, z): " <<std::setw(7)<<std::setprecision(7) << x << " " << y << " " <<z;
 	std::string str = ss.str();
 	return str;
 }
@@ -125,7 +115,7 @@ std::string Hud::getSpeed(float x, float y, float z)
 std::string Hud::getAcce(float x, float y, float z)
 {
 	std::stringstream ss (std::stringstream::in | std::stringstream::out);
-	ss << "Acceleration (x, y, z): " <<std::setprecision(7) << x << " " << y << " " <<z;
+	ss << "Acceleration (x, y, z): " <<std::setw(7)<<std::setprecision(7) << x << " " << y << " " <<z;
 	std::string str = ss.str();
 	return str;
 }
@@ -133,14 +123,14 @@ std::string Hud::getAcce(float x, float y, float z)
 std::string Hud::getOrientation(float x, float y, float z)
 {
 	std::stringstream ss (std::stringstream::in | std::stringstream::out);
-	ss << "Orientation (x, y, z): " <<std::setprecision(7) << x << " " << y << " " <<z;
+	ss << "Orientation (x, y, z): " <<std::setw(7)<<std::setprecision(7) << x << " " << y << " " <<z;
 	std::string str = ss.str();
 	return str;
 }
 std::string Hud::getThrust(float x, float y, float z)
 {
 	std::stringstream ss (std::stringstream::in | std::stringstream::out);
-	ss << "Thrust (x, y, z): " <<std::setprecision(7) << x << " " << y << " " <<z;
+	ss << "Thrust (x, y, z): " <<std::setw(7)<<std::setprecision(7) << x << " " << y << " " <<z;
 	std::string str = ss.str();
 	return str;
 }
@@ -155,7 +145,7 @@ void Hud::updateText(float xp, float yp, float zp,float xv, float yv, float zv,f
     pos->setCharacterSize(20.0f);
     pos->setLayout( osgText::Text::LEFT_TO_RIGHT );
 	pos->setText(getPos(xp, yp ,zp));
-	pos->setPosition(osg::Vec3(0,150,0));
+	pos->setPosition(osg::Vec3(0,100,0));
 	hudGeode->addDrawable(pos);
 
 	hudGeode->removeDrawable(speed);
@@ -165,7 +155,7 @@ void Hud::updateText(float xp, float yp, float zp,float xv, float yv, float zv,f
     speed->setCharacterSize(20.0f);
     speed->setLayout( osgText::Text::LEFT_TO_RIGHT );
 	speed->setText(getSpeed(xv, yv ,zv));
-	speed->setPosition(osg::Vec3(0,130,0));
+	speed->setPosition(osg::Vec3(0,80,0));
 	hudGeode->addDrawable(speed);
 
 	hudGeode->removeDrawable(acce);
@@ -175,7 +165,7 @@ void Hud::updateText(float xp, float yp, float zp,float xv, float yv, float zv,f
     acce->setCharacterSize(20.0f);
     acce->setLayout( osgText::Text::LEFT_TO_RIGHT );
     acce->setText(getAcce(xa, ya ,za));
-    acce->setPosition(osg::Vec3(0,110,0));
+    acce->setPosition(osg::Vec3(0,60,0));
 	hudGeode->addDrawable(acce);
 
 	hudGeode->removeDrawable(thrust);
@@ -185,7 +175,7 @@ void Hud::updateText(float xp, float yp, float zp,float xv, float yv, float zv,f
     thrust->setCharacterSize(20.0f);
     thrust->setLayout( osgText::Text::LEFT_TO_RIGHT );
     thrust->setText(getThrust(xt, yt ,zt));
-    thrust->setPosition(osg::Vec3(0,90,0));
+    thrust->setPosition(osg::Vec3(0,40,0));
 	hudGeode->addDrawable(thrust);
 
 	hudGeode->removeDrawable(orientation);
@@ -195,34 +185,8 @@ void Hud::updateText(float xp, float yp, float zp,float xv, float yv, float zv,f
     orientation->setCharacterSize(20.0f);
     orientation->setLayout( osgText::Text::LEFT_TO_RIGHT );
     orientation->setText(getOrientation(xo, yo ,zo));
-    orientation->setPosition(osg::Vec3(0,70,0));
+    orientation->setPosition(osg::Vec3(0,20,0));
 	hudGeode->addDrawable(orientation);
 	
-	/*
-	hudGeode->removeDrawable(text);
-	text = new osgText::Text;
-    text->setFont(osgText::readFontFile("fonts/vera.ttf"));
-    text->setColor(osg::Vec4(255,255,255,1.0f));
-    text->setCharacterSize(20.0f);
-    text->setLayout( osgText::Text::LEFT_TO_RIGHT );
-    text->setText("0, 0, 0");
-    text->setPosition(osg::Vec3(0,200,0));
-	hudGeode->addDrawable(text);
-	*/
 }
 
-/*
-void Hud::run1()
-{
-	
-
-
-
-}
-
-void Hud::run2()
-{
-	
-
-}
-*/

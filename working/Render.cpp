@@ -41,10 +41,6 @@ void Render::Game_Play(){
 	sr->setRender(this);
 	osg::ref_ptr<osg::Node> helicopter = osgDB::readNodeFile("Sikorsky2.osg");
 	osg::ref_ptr<osg::Node> ground = osgDB::readNodeFile("lz.osg");
-	//osg::ref_ptr<osg::Node> confetti = osgDB::readNodeFile("glsl_confetti.osgt");
-	//osg::ref_ptr<osg::Node> avatar = osgDB::readNodeFile("avatar.osg");
-	//osg::ref_ptr<osg::Node> cow = osgDB::readNodeFile("cow.osg");
-	//osg::ref_ptr<osg::Node> dumptruck = osgDB::readNodeFile("dumptruck.osg");
 
 	ball1  = new osg::ShapeDrawable;
 	ball1->setShape( new osg::Sphere(osg::Vec3(0.0f, 0.0f,0.0f), 25.0f));
@@ -103,23 +99,7 @@ void Render::Game_Play(){
 	groundTransform->setPosition(osg::Vec3(0.0f, 0.0f, -100.0f));
 	groundTransform->setScale(osg::Vec3(30.0f, 30.0f, 1.0f)); // then avatart and truck still stay on ground
 
-	// add modles we picked
-	/*
-	osg::ref_ptr<osg::PositionAttitudeTransform> avatarTransform = new osg::PositionAttitudeTransform;
-	avatarTransform->addChild(avatar.get());
-	avatarTransform->setPosition(osg::Vec3(1700.0f,-8000.0f,0));
-	avatarTransform->setScale(osg::Vec3(100.0f,100.0f,100.0f));
 	
-	osg::ref_ptr<osg::PositionAttitudeTransform> cowTransform = new osg::PositionAttitudeTransform;
-	cowTransform->addChild(cow.get());
-	cowTransform->setPosition(osg::Vec3(250.0f, -2000.0f, 60.0f));
-	cowTransform->setScale(osg::Vec3(20.0f, 20.0f, 20.0f));
-
-	osg::ref_ptr<osg::PositionAttitudeTransform> dumptruckTransform = new osg::PositionAttitudeTransform;
-	dumptruckTransform->addChild(dumptruck.get());
-	dumptruckTransform->setPosition(osg::Vec3(-500.0f, -4000.0f, 100.0f));
-	dumptruckTransform->setScale(osg::Vec3(20.0f, 20.0f, 20.0f));
-	*/
 
 	modelPosition.set(helicopterTransform->getPosition());
 	modelVelocity.set(osg::Vec3f(0,0,0));
@@ -133,10 +113,7 @@ void Render::Game_Play(){
 	rootNode->addChild( groundTransform.get());
 	rootNode->addChild( helicopterTransform.get());
 	rootNode->addChild(torusGroup.get());
-	//rootNode->addChild( confettiTransform.get());
-	//rootNode->addChild( avatarTransform.get());
-	//rootNode->addChild( cowTransform.get());
-	//rootNode->addChild( dumptruckTransform.get());
+
 
 	//hud
 	rootNode->addChild(hudCamera);
@@ -369,13 +346,6 @@ void Render::updateGamePlay()
 	logger->log("X Acc: " + f2s(xAcc) + " Y Acc: " + f2s(yAcc) +" Z Acc: " + f2s(zAcc));
 	logger->log("Throttle Position: " + f2s(rotorForce/Constants::getInstance()->baseThrottle));
 
-	//hud
-	hud.updateText(xPos, yPos, zPos, xVel, yVel, zVel, xAcc, yAcc, zAcc, 0,0,0, axForce, ayForce, axForce);
-	//hud.setDisplaySpeed("X Vel: " + f2s(xVel) + " Y Vel: " + f2s(yVel) +" Z Vel: " + f2s(zVel));
-	//hud.setDisplayAcce("X Acc: " + f2s(xAcc) + " Y Acc: " + f2s(yAcc) +" Z Acc: " + f2s(zAcc));
-	//hud.setDisplayThrust("Throttle Position: " + f2s(rotorForce/Constants::getInstance()->baseThrottle));
-	//hud.setDisplayOrientation("Orientation in X: " + f2s(90 + helicopterOrientation.x_theta) + " Y: " + f2s(helicopterOrientation.y_theta) + " Z: " + f2s(helicopterOrientation.z_theta));
-
 	modelPosition.set(osg::Vec3d(xPos, yPos, zPos));
 	modelVelocity.set(osg::Vec3f(xVel, yVel, zVel));
 	helicopterTransform->setPosition(modelPosition);
@@ -388,7 +358,9 @@ void Render::updateGamePlay()
 	        osg::DegreesToRadians(helicopterOrientation.z_theta),osg::Vec3f(0,0,1) 	 	
 	        ) 	 	
 	);
-
+	
+	hud.updateText(xPos, yPos, zPos, xVel, yVel, zVel, xAcc, yAcc, zAcc, helicopterOrientation.x_theta , helicopterOrientation.y_theta, helicopterOrientation.z_theta, axForce, ayForce, axForce);
+	
 	if(ScriptRunner::getInstance()->getStatus()){ ScriptRunner::getInstance()->doCommand(); }
 	
 }

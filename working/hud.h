@@ -19,20 +19,12 @@ private:
 	osgText::Text * acce;
 	osgText::Text * thrust;
 	osgText::Text * orientation;
-	osgText::Text * text;
-	osgText::Text * text2;
+	osgText::Text * helpinfo1;
+	osgText::Text * helpinfo2;
 
 public:
     Hud();
-    //void run1();
-    //void run2();
-    void setText(const std::string& hudTest);
 
-    void setPosition(osg::Vec3d position);
-
-	
-
-	  
     osg::Camera * getHudCamera();
     osg::Geode * getHudGeode();
     void initializeHudText();
@@ -44,9 +36,6 @@ public:
 	std::string getThrust(float x, float y, float z);
 
 	void updateText(float xp, float yp, float zp,float xv,float yv,float zv,float xa,float ya,float za, float xo, float yo, float zo,float xt, float yt, float zt);
-
-
-
 
 };
 
