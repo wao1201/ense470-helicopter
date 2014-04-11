@@ -109,6 +109,9 @@ void Render::Game_Play(){
 	cowTransform->addChild(flycow.get());
 	cowTransform->setPosition(modelPosition);
 	cowTransform->setScale(osg::Vec3(0.1f, 0.1f, 0.1f));
+	cowPosition.set(helicopterTransform->getPosition());
+	cowVelocity.set(osg::Vec3f(0,0,0));
+	fire = false; // default missile setting
 
 	//hud
 	hudCamera = hud.getHudCamera();
@@ -312,6 +315,12 @@ void Render::yaw(float angle)
 	helicopterOrientation.z_theta += angle;
 }
 
+	// m3: missile
+void Render::isFire()
+{
+	fire = true;
+}
+
 void Render::updateGamePlay()
 {
 	if (Render::detectCollision(osg::BoundingSphere(helicopterTransform->getBound()), osg::BoundingSphere(tor1Tr->getBound())))
@@ -341,6 +350,10 @@ void Render::updateGamePlay()
 	float yAcc = ayForce/mass;
 	float zAcc = azForce/mass;
 
+	// m3: missile
+	
+
+
 	float delta = viewer.getFrameStamp()->getReferenceTime() - last;
 	last = viewer.getFrameStamp()->getReferenceTime();
 
@@ -364,6 +377,11 @@ void Render::updateGamePlay()
 	}
 
 	hud.crashed(crash);
+
+	//m3: missile
+	if(fire = true){
+	}
+
 
 	Logger* logger = Logger::getInstance();
 	string something = f2s(xPos);

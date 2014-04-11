@@ -48,6 +48,9 @@ class Render{
 	  float rotorForce;
 	  osg::Vec3f helicopterThrust;
 	  bool crash;
+	  osg::Vec3d cowPosition;
+	  osg::Vec3f cowVelocity;
+	  bool fire;
 
   public:
 	  Render() : last(0) {
@@ -65,7 +68,7 @@ class Render{
 	  void setzero();
 	  void centerjoystick();
 
-	 
+	  void isFire();
 
 	  void roll(float angle);
 	  void pitch(float angle);

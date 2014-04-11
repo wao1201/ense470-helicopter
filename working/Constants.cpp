@@ -19,6 +19,7 @@
 	{
 		this->gravity = (float)9.81;
 		this->helicopter = new HelicopterConfig();
+		this->missile = new MissileConfig();
 		this->maxThrottle = 23;
 		this->mouseDown = false;
 		this->maxTheta = 15;

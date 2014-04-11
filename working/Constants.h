@@ -13,6 +13,7 @@
 #include <iostream>
 #include <fstream>
 #include "HelicopterConfig.h"
+#include "missile.h"
 #include "SleepThread.h"
 
 enum ATTR_TYPE {G_ACCEL};
@@ -32,6 +33,7 @@ public:
 	bool frictionFlag;
 
 	HelicopterConfig* helicopter;
+	MissileConfig* missile;
 	static Constants* Constants::getInstance(){
 		static Constants *instance = 0;
 		if(instance == 0){
