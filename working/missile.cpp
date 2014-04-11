@@ -13,6 +13,6 @@ MissileConfig::MissileConfig(float Airspeed, float mass)
 }
 
 
-MissileConfig::MissileConfig(void)
+MissileConfig::~MissileConfig(void)
 {
 }
