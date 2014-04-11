@@ -33,6 +33,7 @@
 void Render::Game_Play(){
 	crash = false;
 	friction = true;
+	fireTimer=Constants::getInstance()->fireRate;
 
 	//hud
 	hud.initializeHudText();
@@ -303,9 +304,6 @@ void Render::roll(float angle)
 	else if(helicopterOrientation.y_theta < -30)
 		helicopterOrientation.y_theta =-30;
 
-
-
-
 }
 
 void Render::pitch(float angle)
@@ -406,15 +404,40 @@ void Render::updateGamePlay()
 	modelVelocity.set(osg::Vec3f(xVel, yVel, zVel));
 	helicopterTransform->setPosition(modelPosition);
 
-	//m3: missile
-	if(fire == true){
-		std::cout<<"asdfasdfgqwer";
-		cowVelocity.set(osg::Vec3f(0,0,-9.8*delta*0.99999999999));
 
+
+
+	//m3: missile
+	if(fire == true)
+	{
+		if(fireTimer==Constants::getInstance()->fireRate)
+		{
+			cowVelocity.set(osg::Vec3f((sin(osg::DegreesToRadians(helicopterOrientation.z_theta)))*Constants::getInstance()->missile->Airspeed + (modelVelocity.x()*delta),
+										-((cos(osg::DegreesToRadians(helicopterOrientation.z_theta)))*Constants::getInstance()->missile->Airspeed + (modelVelocity.y()*delta)),
+										(sin(-(osg::DegreesToRadians(helicopterOrientation.x_theta+5))))*Constants::getInstance()->missile->Airspeed + (-modelVelocity.z()*delta)));
+
+			cowPosition.set(osg::Vec3d(cowPosition.x() + cowVelocity.x()*delta,cowPosition.y() + cowVelocity.y()*delta,cowPosition.z() + cowVelocity.z()*delta));
+
+			cowTransform->setPosition(cowPosition);
+		}
+		if(fireTimer<=Constants::getInstance()->fireRate && fireTimer>0)
+		{
+			cowPosition.set(osg::Vec3d(cowPosition.x() + cowVelocity.x()*delta,cowPosition.y() + cowVelocity.y()*delta,cowPosition.z() + cowVelocity.z()*delta));
+
+			cowTransform->setPosition(cowPosition);
+		}
+
+		fireTimer--;
+		if(fireTimer<=0)
+		{
+			fireTimer=Constants::getInstance()->fireRate;
+			fire=false;
+		}
 	}
 	else
 	{
 		cowTransform->setPosition(modelPosition);
+		cowPosition = modelPosition;
 	}
 
 	// orientation

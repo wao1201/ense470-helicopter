@@ -31,6 +31,7 @@ public:
 	float frictionConstant;
 	float baseThrottle;
 	bool frictionFlag;
+	int fireRate;
 
 	HelicopterConfig* helicopter;
 	MissileConfig* missile;

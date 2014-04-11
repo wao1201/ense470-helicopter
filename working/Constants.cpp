@@ -19,15 +19,16 @@
 	{
 		this->gravity = (float)9.81;
 		this->helicopter = new HelicopterConfig();
-		//this->missile = new MissileConfig();
+		this->missile = new MissileConfig();
 		this->maxThrottle = 23;
 		this->mouseDown = false;
 		this->maxTheta = 15;
-		this->frictionConstant = 50;//calculateFrictionConstant(maxTheta);
+		this->frictionConstant = 100;//calculateFrictionConstant(maxTheta);
 		this->baseThrottle = helicopter->mass*gravity/10;
 		this->disableMouse = false;
 		this->loggingOn = false;
 		this->frictionFlag = false;
+		this->fireRate = 150;
 	}
 
 	void Constants::setConstantsFromFile(std::ifstream & infile)

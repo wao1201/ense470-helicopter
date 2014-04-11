@@ -3,7 +3,7 @@
 MissileConfig::MissileConfig(void)
 {
 	this->mass = 100;
-	this->Airspeed = 100;
+	this->Airspeed = 40;
 }
 
 MissileConfig::MissileConfig(float Airspeed, float mass)
