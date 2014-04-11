@@ -36,8 +36,6 @@ void Render::Game_Play(){
 	hud.initializeHudText();
 	osg::Camera * hudCamera;
 
-	bool frictionFlag = 1; // flag for toggle friction
-
 	ScriptRunner * sr = ScriptRunner::getInstance();
 	sr->setRender(this);
 	osg::ref_ptr<osg::Node> helicopter = osgDB::readNodeFile("Sikorsky2.osg");
