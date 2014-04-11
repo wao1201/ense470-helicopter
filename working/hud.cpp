@@ -77,7 +77,7 @@ void Hud::initializeHudText()
     helpinfo2->setColor(osg::Vec4(255,255,255,1.0f));
     helpinfo2->setCharacterSize(15.0f);
     helpinfo2->setLayout( osgText::Text::LEFT_TO_RIGHT );
-    helpinfo2->setText("Orientation controls: 'w' increase pitch, 'x' decrease pitch, 'a' roll left, 'd' roll right, '<-' yaw left, '->' yaw right , 'f' toggle friction");
+    helpinfo2->setText("Orientation controls: 'w' increase pitch, 'x' decrease pitch, 'a' roll left, 'd' roll right, '<-' yaw left, '->' yaw right , 'f' toggle friction, 'r' reset after crash");
     helpinfo2->setPosition(osg::Vec3(0,980,0));
 	hudGeode->addDrawable(helpinfo2);
 
@@ -99,7 +99,7 @@ osg::Geode * Hud::getHudGeode()
 std::string Hud::getPos(float x, float y, float z)
 {
 	std::stringstream ss (std::stringstream::in | std::stringstream::out);
-	ss << "Position (x, y, z): " <<std::setw(7)<<std::setprecision(7) << x << " " << y << " " <<z;
+	ss << "Position (x, y, z): " <<std::setw(8)<<std::fixed<<std::setprecision(5) << x << " " <<std::setw(8)<< y << " " <<std::setw(8)<<z;
 	std::string str = ss.str();
 	return str;
 }
@@ -107,7 +107,7 @@ std::string Hud::getPos(float x, float y, float z)
 std::string Hud::getSpeed(float x, float y, float z)
 {
 	std::stringstream ss (std::stringstream::in | std::stringstream::out);
-	ss << "Velocity (x, y, z): " <<std::setw(7)<<std::setprecision(7) << x << " " << y << " " <<z;
+	ss << "Velocity (x, y, z): " <<std::setw(8)<<std::fixed<<std::setprecision(5) << x << " " <<std::setw(8)<< y << " " <<std::setw(8)<<z;
 	std::string str = ss.str();
 	return str;
 }
@@ -115,7 +115,7 @@ std::string Hud::getSpeed(float x, float y, float z)
 std::string Hud::getAcce(float x, float y, float z)
 {
 	std::stringstream ss (std::stringstream::in | std::stringstream::out);
-	ss << "Acceleration (x, y, z): " <<std::setw(7)<<std::setprecision(7) << x << " " << y << " " <<z;
+	ss << "Acceleration (x, y, z): " <<std::setw(8)<<std::fixed<<std::setprecision(5) << x << " " <<std::setw(8)<< y << " " <<std::setw(8)<<z;
 	std::string str = ss.str();
 	return str;
 }
@@ -123,14 +123,14 @@ std::string Hud::getAcce(float x, float y, float z)
 std::string Hud::getOrientation(float x, float y, float z)
 {
 	std::stringstream ss (std::stringstream::in | std::stringstream::out);
-	ss << "Orientation (x, y, z): " <<std::setw(7)<<std::setprecision(7) << x << " " << y << " " <<z;
+	ss << "Orientation (x, y, z): "<<std::setw(8)<<std::fixed<<std::setprecision(5)<< x << " " <<std::setw(8)<< y << " " <<std::setw(8)<<z;
 	std::string str = ss.str();
 	return str;
 }
 std::string Hud::getThrust(float x, float y, float z)
 {
 	std::stringstream ss (std::stringstream::in | std::stringstream::out);
-	ss << "Thrust (x, y, z): " <<std::setw(7)<<std::setprecision(7) << x << " " << y << " " <<z;
+	ss << "Thrust (x, y, z): "  <<std::setw(8)<<std::fixed<<std::setprecision(5) << x << " " <<std::setw(8)<< y << " " <<std::setw(8)<<z;
 	std::string str = ss.str();
 	return str;
 }
