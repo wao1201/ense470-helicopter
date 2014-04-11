@@ -31,6 +31,7 @@
 #include <osg/FrameStamp>
 
 void Render::Game_Play(){
+	crash = false;
 
 	//hud
 	hud.initializeHudText();
