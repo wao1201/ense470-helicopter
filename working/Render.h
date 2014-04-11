@@ -50,7 +50,6 @@ class Render{
 	  bool crash;
 
 	  bool friction;
-	  float phi,theta;
 
 	  osg::Vec3d cowPosition;
 	  osg::Vec3f cowVelocity;
