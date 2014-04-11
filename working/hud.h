@@ -21,6 +21,7 @@ private:
 	osgText::Text * orientation;
 	osgText::Text * helpinfo1;
 	osgText::Text * helpinfo2;
+	osgText::Text * crash;
 
 public:
     Hud();
@@ -28,6 +29,8 @@ public:
     osg::Camera * getHudCamera();
     osg::Geode * getHudGeode();
     void initializeHudText();
+
+	void crashed(bool isCrash);
 
 	std::string getPos(float x, float y, float z);
 	std::string getSpeed(float x, float y, float z);

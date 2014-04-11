@@ -357,6 +357,9 @@ void Render::updateGamePlay()
 		zVel = -zVel;
 
 	}
+
+	hud.crashed(crash);
+
 	Logger* logger = Logger::getInstance();
 	string something = f2s(xPos);
 	logger->log("X Pos: " + f2s(xPos) + " Y Pos: " + f2s(yPos) + " Z Pos: " + f2s(zPos)); 
