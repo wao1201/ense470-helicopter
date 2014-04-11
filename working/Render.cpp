@@ -41,6 +41,7 @@ void Render::Game_Play(){
 	sr->setRender(this);
 	osg::ref_ptr<osg::Node> helicopter = osgDB::readNodeFile("Sikorsky2.osg");
 	osg::ref_ptr<osg::Node> ground = osgDB::readNodeFile("lz.osg");
+	osg::ref_ptr<osg::Node> flycow = osgDB::readNodeFile("cow.osg");
 
 	ball1  = new osg::ShapeDrawable;
 	ball1->setShape( new osg::Sphere(osg::Vec3(0.0f, 0.0f,0.0f), 25.0f));
@@ -77,7 +78,6 @@ void Render::Game_Play(){
 	torusGroup->addChild(tor2Tr);
 	torusGroup->addChild(tor3Tr);
 
-
 	helicopterTransform = new osg::PositionAttitudeTransform;
 	helicopterTransform->addChild(helicopter.get());
 	helicopterTransform->setPosition(osg::Vec3(0.0f, 0.0f, 0.0f));
@@ -97,14 +97,18 @@ void Render::Game_Play(){
 	groundTransform = new osg::PositionAttitudeTransform;
 	groundTransform->addChild(ground.get());
 	groundTransform->setPosition(osg::Vec3(0.0f, 0.0f, -100.0f));
-	groundTransform->setScale(osg::Vec3(30.0f, 30.0f, 1.0f)); // then avatart and truck still stay on ground
-
-	
+	groundTransform->setScale(osg::Vec3(30.0f, 30.0f, 1.0f));
 
 	modelPosition.set(helicopterTransform->getPosition());
 	modelVelocity.set(osg::Vec3f(0,0,0));
 
 	helicopterThrust = osg::Vec3f(0.0, 0.0, 0.0);
+
+	// missile
+	osg::ref_ptr<osg::PositionAttitudeTransform> cowTransform = new osg::PositionAttitudeTransform;
+	cowTransform->addChild(flycow.get());
+	cowTransform->setPosition(modelPosition);
+	cowTransform->setScale(osg::Vec3(0.1f, 0.1f, 0.1f));
 
 	//hud
 	hudCamera = hud.getHudCamera();
@@ -112,6 +116,7 @@ void Render::Game_Play(){
 	osg::ref_ptr<osg::Group> rootNode = new osg::Group;  //Create a group node
 	rootNode->addChild( groundTransform.get());
 	rootNode->addChild( helicopterTransform.get());
+	rootNode->addChild( cowTransform.get());
 	rootNode->addChild(torusGroup.get());
 
 
