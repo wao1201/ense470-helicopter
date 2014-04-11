@@ -281,11 +281,19 @@ bool Render::detectCollision(osg::BoundingSphere& bs1, osg::BoundingSphere& bs2)
 void Render::roll(float angle)
 {
 	helicopterOrientation.y_theta += angle;
+	if(helicopterOrientation.y_theta > 30)
+		helicopterOrientation.y_theta=30;
+	else if(helicopterOrientation.y_theta < -30)
+		helicopterOrientation.y_theta =-30;
 }
 
 void Render::pitch(float angle)
 {
 	helicopterOrientation.x_theta += angle;
+	if(helicopterOrientation.x_theta > 30)
+		helicopterOrientation.x_theta=30;
+	else if(helicopterOrientation.x_theta < -30)
+		helicopterOrientation.x_theta =-30;
 }
 
 void Render::yaw(float angle)
