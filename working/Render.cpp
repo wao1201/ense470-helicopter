@@ -348,9 +348,13 @@ void Render::updateGamePlay()
 	float zVel = (modelVelocity.z() + zAcc*delta)*0.99999999999;
 
 	if(zPos < 1){  //these ones should be radius of ball
+		if(zVel < -1.1)
+			crash=true;//crash
+
 		zPos = 1;
-		zVel *= 0.8;
+		zVel *= 0.4;
 		zVel = -zVel;
+
 	}
 	Logger* logger = Logger::getInstance();
 	string something = f2s(xPos);

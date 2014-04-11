@@ -47,6 +47,7 @@ class Render{
 	  float aGrav;
 	  float rotorForce;
 	  osg::Vec3f helicopterThrust;
+	  bool crash;
 
   public:
 	  Render() : last(0) {
@@ -57,6 +58,8 @@ class Render{
 	  void setThrottle(int position);
 	  void increaseRotor();
 	  void decreaseRotor();
+
+	  void clearCrash(){crash=false;}
 
 	  void setneutral();
 	  void setzero();

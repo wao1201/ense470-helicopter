@@ -67,6 +67,9 @@ bool ModelController::handle( const osgGA::GUIEventAdapter& ea,
 			case 'x':
 				gameRender->pitch(-1);
 				break;
+			case 'r':
+				gameRender->clearCrash();
+				break;
 			case osgGA::GUIEventAdapter::KEY_Right:
 				gameRender->yaw(-2.0f);
 				break;
