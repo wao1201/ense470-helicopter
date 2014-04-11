@@ -26,6 +26,7 @@
 		this->baseThrottle = helicopter->mass*gravity/10;
 		this->disableMouse = false;
 		this->loggingOn = false;
+		this->frictionFlag = false;
 	}
 
 	void Constants::setConstantsFromFile(std::ifstream & infile)
@@ -65,8 +66,28 @@
 
 	float Constants::calculateFrictionConstant(float theta)
 	{
+		if (frictionFlag){
 		return (helicopter->mass*gravity*tan(osg::DegreesToRadians(theta)))/pow(helicopter->maxAirspeed, 2);
+		}
+		else
+			return 0;
 	}
+
+
+	// toggle friction
+	void Constants::toggleFriction()
+{
+	if(frictionFlag){
+		std::cout<<"Toggle friction off"<<std::endl;
+		
+		frictionFlag = false;
+	}
+	else
+	{
+		frictionFlag = true;
+		std::cout<<"Toggle friction on"<<std::endl;
+	}
+}
 
 	Constants::~Constants(void)
 	{

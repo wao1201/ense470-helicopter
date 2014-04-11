@@ -36,6 +36,7 @@ void Render::Game_Play(){
 	hud.initializeHudText();
 	osg::Camera * hudCamera;
 
+	bool frictionFlag = 1; // flag for toggle friction
 
 	ScriptRunner * sr = ScriptRunner::getInstance();
 	sr->setRender(this);
@@ -201,6 +202,12 @@ void Render::centerjoystick()
 	helicopterThrust = osg::Vec3f(-(rotorForce*sin(theta)*cos(phi)), -(rotorForce*sin(theta)*sin(phi)),(rotorForce*cos(theta)));
 }
 
+// toggle friction
+void Render::toggleFriction()
+{
+	 Constants::getInstance()->toggleFriction();
+}
+
 void Render::setJoystick(float theta, float phi)
 {
 	if (theta < 0)
@@ -359,6 +366,7 @@ void Render::updateGamePlay()
 	        ) 	 	
 	);
 	
+	// hud
 	hud.updateText(xPos, yPos, zPos, xVel, yVel, zVel, xAcc, yAcc, zAcc, helicopterOrientation.x_theta , helicopterOrientation.y_theta, helicopterOrientation.z_theta, axForce, ayForce, axForce);
 	
 	if(ScriptRunner::getInstance()->getStatus()){ ScriptRunner::getInstance()->doCommand(); }

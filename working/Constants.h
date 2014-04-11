@@ -29,6 +29,8 @@ public:
 	float maxTheta;
 	float frictionConstant;
 	float baseThrottle;
+	bool frictionFlag;
+
 	HelicopterConfig* helicopter;
 	static Constants* Constants::getInstance(){
 		static Constants *instance = 0;
@@ -42,8 +44,10 @@ public:
 	float calculateFrictionConstant(float theta);
 	void setFrictionConstant(float theta);
 	~Constants(void);
+	void toggleFriction();
 
 private:
 	static Constants* instance;
+	
 };
 

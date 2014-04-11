@@ -62,10 +62,13 @@ class Render{
 	  void setzero();
 	  void centerjoystick();
 
+	 
+
 	  void roll(float angle);
 	  void pitch(float angle);
 	  void yaw(float angle);
 
+	  void toggleFriction();
 	  	// hud initialize
 	  Hud hud;
 

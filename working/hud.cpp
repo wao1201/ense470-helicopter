@@ -77,7 +77,7 @@ void Hud::initializeHudText()
     helpinfo2->setColor(osg::Vec4(255,255,255,1.0f));
     helpinfo2->setCharacterSize(15.0f);
     helpinfo2->setLayout( osgText::Text::LEFT_TO_RIGHT );
-    helpinfo2->setText("Orientation controls: 'w' increase pitch, 'x' decrease pitch, 'a' roll left, 'd' roll right, '<-' yaw left, '->' yaw right ");
+    helpinfo2->setText("Orientation controls: 'w' increase pitch, 'x' decrease pitch, 'a' roll left, 'd' roll right, '<-' yaw left, '->' yaw right , 'f' toggle friction");
     helpinfo2->setPosition(osg::Vec3(0,980,0));
 	hudGeode->addDrawable(helpinfo2);
 

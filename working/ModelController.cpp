@@ -73,6 +73,9 @@ bool ModelController::handle( const osgGA::GUIEventAdapter& ea,
 			case osgGA::GUIEventAdapter::KEY_Left:
 				gameRender->yaw(2.0f);
 				break;
+			case 'f':
+				gameRender->toggleFriction();
+				break;
 
 			}
 			break;
