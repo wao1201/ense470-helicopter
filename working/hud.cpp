@@ -24,7 +24,7 @@ void Hud::initializeHudText()
     pos->setCharacterSize(20.0f);
     pos->setLayout( osgText::Text::LEFT_TO_RIGHT );
     pos->setText("0, 0, 0");
-    pos->setPosition(osg::Vec3(0,100,0));
+    pos->setPosition(osg::Vec3(0,140,0));
 	hudGeode->addDrawable(pos);
 
 	speed = new osgText::Text;
@@ -33,7 +33,7 @@ void Hud::initializeHudText()
     speed->setCharacterSize(20.0f);
     speed->setLayout( osgText::Text::LEFT_TO_RIGHT );
     speed->setText("0, 0, 0");
-    speed->setPosition(osg::Vec3(0,80,0));
+    speed->setPosition(osg::Vec3(0,120,0));
 	hudGeode->addDrawable(speed);
 
 	acce = new osgText::Text;
@@ -42,7 +42,7 @@ void Hud::initializeHudText()
     acce->setCharacterSize(20.0f);
     acce->setLayout( osgText::Text::LEFT_TO_RIGHT );
     acce->setText("0, 0, 0");
-    acce->setPosition(osg::Vec3(0,60,0));
+    acce->setPosition(osg::Vec3(0,100,0));
 	hudGeode->addDrawable(acce);
 
 	thrust = new osgText::Text;
@@ -51,7 +51,7 @@ void Hud::initializeHudText()
     thrust->setCharacterSize(20.0f);
     thrust->setLayout( osgText::Text::LEFT_TO_RIGHT );
     thrust->setText("0, 0, 0");
-    thrust->setPosition(osg::Vec3(0,40,0));
+    thrust->setPosition(osg::Vec3(0,80,0));
 	hudGeode->addDrawable(thrust);
 
 	orientation = new osgText::Text;
@@ -60,8 +60,26 @@ void Hud::initializeHudText()
     orientation->setCharacterSize(20.0f);
     orientation->setLayout( osgText::Text::LEFT_TO_RIGHT );
     orientation->setText("0, 0, 0");
-    orientation->setPosition(osg::Vec3(0,20,0));
+    orientation->setPosition(osg::Vec3(0,60,0));
 	hudGeode->addDrawable(orientation);
+
+	missile = new osgText::Text;
+    missile->setFont(osgText::readFontFile("fonts/vera.ttf"));
+    missile->setColor(osg::Vec4(255,255,255,1.0f));
+    missile->setCharacterSize(20.0f);
+    missile->setLayout( osgText::Text::LEFT_TO_RIGHT );
+    missile->setText("0, 0, 0");
+    missile->setPosition(osg::Vec3(0,40,0));
+	hudGeode->addDrawable(missile);
+
+	indication = new osgText::Text;
+    indication->setFont(osgText::readFontFile("fonts/vera.ttf"));
+    indication->setColor(osg::Vec4(255,255,255,1.0f));
+    indication->setCharacterSize(20.0f);
+    indication->setLayout( osgText::Text::LEFT_TO_RIGHT );
+    indication->setText("0, 0, 0");
+    indication->setPosition(osg::Vec3(0,20,0));
+	hudGeode->addDrawable(indication);
 	
 	helpinfo1 = new osgText::Text;
     helpinfo1->setFont(osgText::readFontFile("fonts/vera.ttf"));
@@ -107,7 +125,7 @@ std::string Hud::getPos(float x, float y, float z)
 std::string Hud::getSpeed(float x, float y, float z)
 {
 	std::stringstream ss (std::stringstream::in | std::stringstream::out);
-	ss << "Velocity (x, y, z): " <<std::setw(8)<<std::fixed<<std::setprecision(5) << x << " " <<std::setw(8)<< y << " " <<std::setw(8)<<z;
+	ss << "Helicopter Velocity (x, y, z): " <<std::setw(8)<<std::fixed<<std::setprecision(5) << x << " " <<std::setw(8)<< y << " " <<std::setw(8)<<z;
 	std::string str = ss.str();
 	return str;
 }
@@ -135,8 +153,24 @@ std::string Hud::getThrust(float x, float y, float z)
 	return str;
 }
 
+std::string Hud::getSpeedM(float x, float y, float z)
+{
+	std::stringstream ss (std::stringstream::in | std::stringstream::out);
+	ss << "Missile Velocity (x, y, z): " <<std::setw(8)<<std::fixed<<std::setprecision(5) << x << " " <<std::setw(8)<< y << " " <<std::setw(8)<<z;
+	std::string str = ss.str();
+	return str;
+}
 
-void Hud::updateText(float xp, float yp, float zp,float xv, float yv, float zv,float xa, float ya, float za, float xo, float yo, float zo,float xt, float yt, float zt)
+std::string Hud::getIndicationM(float z)
+{
+	std::stringstream ss (std::stringstream::in | std::stringstream::out);
+	ss << "Missile Inclination (z): " <<std::setw(8)<<std::fixed<<std::setprecision(5) <<z;
+	std::string str = ss.str();
+	return str;
+}
+
+
+void Hud::updateText(float xp, float yp, float zp,float xv, float yv, float zv,float xa, float ya, float za, float xo, float yo, float zo, float xt, float yt, float zt, float xm, float ym, float zm, float zi)
 {
 	hudGeode->removeDrawable(pos);
 	pos = new osgText::Text;
@@ -145,7 +179,7 @@ void Hud::updateText(float xp, float yp, float zp,float xv, float yv, float zv,f
     pos->setCharacterSize(20.0f);
     pos->setLayout( osgText::Text::LEFT_TO_RIGHT );
 	pos->setText(getPos(xp, yp ,zp));
-	pos->setPosition(osg::Vec3(0,100,0));
+	pos->setPosition(osg::Vec3(0,140,0));
 	hudGeode->addDrawable(pos);
 
 	hudGeode->removeDrawable(speed);
@@ -155,7 +189,7 @@ void Hud::updateText(float xp, float yp, float zp,float xv, float yv, float zv,f
     speed->setCharacterSize(20.0f);
     speed->setLayout( osgText::Text::LEFT_TO_RIGHT );
 	speed->setText(getSpeed(xv, yv ,zv));
-	speed->setPosition(osg::Vec3(0,80,0));
+	speed->setPosition(osg::Vec3(0,120,0));
 	hudGeode->addDrawable(speed);
 
 	hudGeode->removeDrawable(acce);
@@ -165,7 +199,7 @@ void Hud::updateText(float xp, float yp, float zp,float xv, float yv, float zv,f
     acce->setCharacterSize(20.0f);
     acce->setLayout( osgText::Text::LEFT_TO_RIGHT );
     acce->setText(getAcce(xa, ya ,za));
-    acce->setPosition(osg::Vec3(0,60,0));
+    acce->setPosition(osg::Vec3(0,100,0));
 	hudGeode->addDrawable(acce);
 
 	hudGeode->removeDrawable(thrust);
@@ -175,7 +209,7 @@ void Hud::updateText(float xp, float yp, float zp,float xv, float yv, float zv,f
     thrust->setCharacterSize(20.0f);
     thrust->setLayout( osgText::Text::LEFT_TO_RIGHT );
     thrust->setText(getThrust(xt, yt ,zt));
-    thrust->setPosition(osg::Vec3(0,40,0));
+    thrust->setPosition(osg::Vec3(0,80,0));
 	hudGeode->addDrawable(thrust);
 
 	hudGeode->removeDrawable(orientation);
@@ -185,8 +219,28 @@ void Hud::updateText(float xp, float yp, float zp,float xv, float yv, float zv,f
     orientation->setCharacterSize(20.0f);
     orientation->setLayout( osgText::Text::LEFT_TO_RIGHT );
     orientation->setText(getOrientation(xo, yo ,zo));
-    orientation->setPosition(osg::Vec3(0,20,0));
+    orientation->setPosition(osg::Vec3(0,60,0));
 	hudGeode->addDrawable(orientation);
+
+	hudGeode->removeDrawable(missile);
+	missile = new osgText::Text;
+    missile->setFont(osgText::readFontFile("fonts/vera.ttf"));
+    missile->setColor(osg::Vec4(255,255,255,1.0f));
+    missile->setCharacterSize(20.0f);
+    missile->setLayout( osgText::Text::LEFT_TO_RIGHT );
+    missile->setText(getSpeedM(xm, ym, zm));
+    missile->setPosition(osg::Vec3(0,40,0));
+	hudGeode->addDrawable(missile);
+
+	hudGeode->removeDrawable(indication);
+	indication = new osgText::Text;
+    indication->setFont(osgText::readFontFile("fonts/vera.ttf"));
+    indication->setColor(osg::Vec4(255,255,255,1.0f));
+    indication->setCharacterSize(20.0f);
+    indication->setLayout( osgText::Text::LEFT_TO_RIGHT );
+    indication->setText(getIndicationM(zi));
+    indication->setPosition(osg::Vec3(0,20,0));
+	hudGeode->addDrawable(indication);
 	
 }
 

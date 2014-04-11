@@ -18,6 +18,8 @@ private:
 	osgText::Text * acce;
 	osgText::Text * thrust;
 	osgText::Text * orientation;
+	osgText::Text * missile;
+	osgText::Text * indication;
 	osgText::Text * helpinfo1;
 	osgText::Text * helpinfo2;
 	osgText::Text * crash;
@@ -38,8 +40,10 @@ public:
 	std::string getAcce(float x, float y, float z);
 	std::string getOrientation(float x, float y, float z);
 	std::string getThrust(float x, float y, float z);
+	std::string getSpeedM(float x, float y, float z);
+	std::string getIndicationM(float z);
 
-	void updateText(float xp, float yp, float zp,float xv,float yv,float zv,float xa,float ya,float za, float xo, float yo, float zo,float xt, float yt, float zt);
+	void updateText(float xp, float yp, float zp,float xv,float yv,float zv,float xa,float ya,float za, float xo, float yo, float zo,float xt, float yt, float zt, float xm, float ym, float zm, float zi);
 
 };
 

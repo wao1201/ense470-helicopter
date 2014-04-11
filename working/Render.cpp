@@ -33,6 +33,7 @@
 void Render::Game_Play(){
 	crash = false;
 	friction = true;
+	missileCollison = false;
 	fireTimer=Constants::getInstance()->fireRate;
 
 	//hud
@@ -196,10 +197,7 @@ void Render::decreaseRotor()
 // set rotor force to neutral
 void Render::setneutral()
 {
-	//rotorForce = 88290;
-
-	// set force for x, y, z axis
-	helicopterThrust = osg::Vec3f(helicopterThrust.x(),helicopterThrust.y(),Constants::getInstance()->helicopter->mass*Constants::getInstance()->gravity);
+	rotorForce = Constants::getInstance()->helicopter->mass*Constants::getInstance()->gravity;
 }
 // set rotor force to zero
 void Render::setzero()
@@ -209,9 +207,7 @@ void Render::setzero()
 // set joystick to center
 void Render::centerjoystick()
 {
-	float theta = 0;
-	float phi = 0;
-	helicopterThrust = osg::Vec3f(-(rotorForce*sin(theta)*cos(phi)), -(rotorForce*sin(theta)*sin(phi)),(rotorForce*cos(theta)));
+	helicopterOrientation.x_theta = helicopterOrientation.y_theta = 0;
 }
 
 // toggle friction
@@ -231,19 +227,13 @@ void Render::toggleFriction()
 
 void Render::setJoystick(float theta, float phi)
 {
-	if (theta < 0)
-		theta = 0;
-	else if (theta > 15)
-		theta = 15;
-	
-	if (phi > 360 || phi < -360)
-		phi = fmod(phi, 360);
-	if (phi < 0)
-		phi += 360;
-	
-	helicopterThrust = osg::Vec3f(-(rotorForce*sin(theta)*cos(phi)), -(rotorForce*sin(theta)*sin(phi)),(rotorForce*cos(theta)));
+	helicopterOrientation.x_theta = cos(osg::DegreesToRadians(phi))*(theta);
+		
+	helicopterOrientation.y_theta = sin(osg::DegreesToRadians(phi))*(theta);
+
 }
 
+//the following 2 functions are no longer being used to and real extent, but were left in to avoid errors in the functions that use them
 osg::Vec3f Render::calculateForceDirections(float force, osg::Vec2f direction){
 	Vector2 vector = Vector2::Vector2(direction.x(), direction.y());
 	float viewHeight = viewer.getCamera()->getViewport()->height();
@@ -327,6 +317,38 @@ void Render::yaw(float angle)
 
 void Render::updateGamePlay()
 {
+	//Cow collision detection:
+	if (Render::detectCollision(osg::BoundingSphere(cowTransform->getBound()), osg::BoundingSphere(tor1Tr->getBound())) && missileCollison==false)
+	{
+		missileCollison = true;
+		ball1->setColor(osg::Vec4(0.0f,1.0f,0.0f,0.0f));
+		Logger::getInstance()->log("Cow collision with ball #1");
+		std::cout<<"Cow impacts ball #1\n";
+	}
+	if (Render::detectCollision(osg::BoundingSphere(cowTransform->getBound()), osg::BoundingSphere(tor2Tr->getBound())) && missileCollison==false)
+	{
+		missileCollison = true;
+		ball2->setColor(osg::Vec4(0.0f,1.0f,0.0f,0.0f));
+		Logger::getInstance()->log("Cow collision with ball #2");
+		std::cout<<"Cow impacts ball #2\n";
+	}
+	if (Render::detectCollision(osg::BoundingSphere(cowTransform->getBound()), osg::BoundingSphere(tor3Tr->getBound())) && missileCollison==false)
+	{
+		missileCollison = true;
+		ball3->setColor(osg::Vec4(0.0f,1.0f,0.0f,0.0f));
+		Logger::getInstance()->log("Cow collision with ball #3");
+		std::cout<<"Cow impacts ball #3\n";
+	}
+
+	if((cowPosition.z() < 0) && missileCollison==false)
+	{  //these ones should be radius of ball
+		missileCollison = true;
+		std::cout<<"Cow impacts ground\n";
+		Logger::getInstance()->log("Cow impacts ground\n");
+
+	}
+
+
 	if (Render::detectCollision(osg::BoundingSphere(helicopterTransform->getBound()), osg::BoundingSphere(tor1Tr->getBound())))
 	{
 		ball1->setColor(osg::Vec4(1.0f,0.0f,0.0f,0.0f));
@@ -383,7 +405,14 @@ void Render::updateGamePlay()
 
 	if(zPos < 1){  //these ones should be radius of ball
 		if(zVel < -3)//THIS VALUE IS SUBJECT TO CHANGE
+		{
 			crash=true;
+			Logger::getInstance()->log("Collison with ground");
+		}
+		else
+		{
+			Logger::getInstance()->log("Successful landing");
+		}
 
 		zPos = 1;
 		zVel *= 0;
@@ -430,6 +459,7 @@ void Render::updateGamePlay()
 		fireTimer--;
 		if(fireTimer<=0)
 		{
+			missileCollison = false;
 			fireTimer=Constants::getInstance()->fireRate;
 			fire=false;
 		}
@@ -450,7 +480,7 @@ void Render::updateGamePlay()
 	);
 	
 	// hud
-	hud.updateText(xPos, yPos, zPos, xVel, yVel, zVel, xAcc, yAcc, zAcc, helicopterOrientation.x_theta , helicopterOrientation.y_theta, helicopterOrientation.z_theta, axForce, ayForce, azForce);
+	hud.updateText(xPos, yPos, zPos, xVel, yVel, zVel, xAcc, yAcc, zAcc, helicopterOrientation.x_theta , helicopterOrientation.y_theta, helicopterOrientation.z_theta, axForce, ayForce, azForce, cowVelocity.x(), cowVelocity.y(), cowVelocity.z(),helicopterOrientation.x_theta+5);
 	
 	if(ScriptRunner::getInstance()->getStatus()){ ScriptRunner::getInstance()->doCommand(); }
 	
