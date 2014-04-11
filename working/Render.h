@@ -48,6 +48,8 @@ class Render{
 	  float rotorForce;
 	  osg::Vec3f helicopterThrust;
 	  bool crash;
+	  bool friction;
+	  float phi,theta;
 
   public:
 	  Render() : last(0) {

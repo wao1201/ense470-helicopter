@@ -56,10 +56,10 @@ bool ModelController::handle( const osgGA::GUIEventAdapter& ea,
 				Logger::getInstance()->toggleLogging();
 				break;
 			case 'a':
-				gameRender->roll(-1);
+				gameRender->roll(1);
 				break;
 			case 'd':
-				gameRender->roll(1);
+				gameRender->roll(-1);
 				break;
 			case 'w':
 				gameRender->pitch(1);

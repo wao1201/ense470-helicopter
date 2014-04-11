@@ -32,6 +32,9 @@
 
 void Render::Game_Play(){
 	crash = false;
+	friction = true;
+	phi=theta=0;
+
 
 	//hud
 	hud.initializeHudText();
@@ -81,8 +84,9 @@ void Render::Game_Play(){
 	helicopterTransform = new osg::PositionAttitudeTransform;
 	helicopterTransform->addChild(helicopter.get());
 	helicopterTransform->setPosition(osg::Vec3(0.0f, 0.0f, 0.0f));
-	helicopterTransform->setAttitude(osg::Quat((3.14/2), osg::Vec3d(1.0, 0.0, 0.0)));
+	helicopterTransform->setAttitude(osg::Quat((0), osg::Vec3d(1.0, 0.0, 0.0)));
 
+	
 	// rotate model
 	helicopterTransform->setAttitude( 	 	
 		osg::Quat( 	 	
@@ -128,7 +132,7 @@ void Render::Game_Play(){
 
 	//This bit of code will have the camera follow the model
     osg::ref_ptr<osgGA::NodeTrackerManipulator> nodeTracker = new osgGA::NodeTrackerManipulator;
-    nodeTracker->setHomePosition( osg::Vec3(0, 100.0, 0),
+    nodeTracker->setHomePosition( osg::Vec3(0.0, 100.0, 0),
                                     osg::Vec3(), osg::Z_AXIS );
     //This will track the center of the helicopter and rotate as well.
     nodeTracker->setTrackerMode( osgGA::NodeTrackerManipulator::NODE_CENTER_AND_ROTATION );
@@ -204,7 +208,16 @@ void Render::centerjoystick()
 // toggle friction
 void Render::toggleFriction()
 {
-	 Constants::getInstance()->toggleFriction();
+	 if(friction){
+		std::cout<<"Toggle friction off"<<std::endl;
+		
+		friction = false;
+	}
+	else
+	{
+		friction = true;
+		std::cout<<"Toggle friction on"<<std::endl;
+	}
 }
 
 void Render::setJoystick(float theta, float phi)
@@ -228,17 +241,10 @@ osg::Vec3f Render::calculateForceDirections(float force, osg::Vec2f direction){
 	float viewWidth = viewer.getCamera()->getViewport()->width();
 	
 	float relationship = (viewHeight<viewWidth)?15/(viewHeight/4):15/(viewWidth/4);
-
-	//std::cout << "Relationship: " << relationship << std::endl;
 	
 	float theta = osg::DegreesToRadians(vector.Length()*relationship);
 	float phi = atan2(direction.y(), direction.x());
 
-	//std::cout << "Theta: " << theta << std::endl;
-	//std::cout << "Phi: " << phi << std::endl;
-
-	//Constants::getInstance()->setFrictionConstant(theta);
-	//std::cout << Constants::getInstance()->frictionConstant << std::endl;
 	Logger::getInstance()->log("Theta: " + f2s(theta) + " Phi: " + f2s(phi));
 	return osg::Vec3f(-(force*sin(theta)*cos(phi)), -(force*sin(theta)*sin(phi)),(force*cos(theta)));
 }
@@ -264,9 +270,6 @@ void Render::updateDirection(float x, float y){
 	
   osg::Vec2f xy(x, y);
 
- //std::cout << "0Centered-X:  " << x << std::endl;
-	//std::cout << "0Centered-Y:  " << y << std::endl;
-
  helicopterThrust = calculateForceDirections(rotorForce, xy);
 }
 
@@ -291,6 +294,10 @@ void Render::roll(float angle)
 		helicopterOrientation.y_theta=30;
 	else if(helicopterOrientation.y_theta < -30)
 		helicopterOrientation.y_theta =-30;
+
+
+
+
 }
 
 void Render::pitch(float angle)
@@ -304,7 +311,12 @@ void Render::pitch(float angle)
 
 void Render::yaw(float angle)
 {
+	//eliminate negatinve orientation problem:
 	helicopterOrientation.z_theta += angle;
+	if(helicopterOrientation.z_theta<0)
+		helicopterOrientation.z_theta = 360 + helicopterOrientation.z_theta;
+
+	helicopterOrientation.z_theta = fmod(helicopterOrientation.z_theta,360);
 }
 
 void Render::updateGamePlay()
@@ -325,18 +337,31 @@ void Render::updateGamePlay()
 		Logger::getInstance()->log("Collision with ball #3");
 	}
 
-	float frictionScalar = Constants::getInstance()->frictionConstant*sqrt(pow(modelVelocity.x(),2)+pow(modelVelocity.y(),2)+pow(modelVelocity.z(),2));
+	float frictionScalar;
+	if(friction==true)
+		frictionScalar = Constants::getInstance()->frictionConstant;//*sqrt(pow(modelVelocity.x(),2)+pow(modelVelocity.y(),2)+pow(modelVelocity.z(),2));
+	else
+		frictionScalar = 0;
+
 	float mass = Constants::getInstance()->helicopter->mass;
 
-	float axForce = helicopterThrust.x() - frictionScalar*modelVelocity.x();
-	float ayForce = helicopterThrust.y() - frictionScalar*modelVelocity.y();
-	float azForce = aGrav*mass + helicopterThrust.z() - frictionScalar*modelVelocity.z();
+	float axForce = (sin(osg::DegreesToRadians(helicopterOrientation.y_theta))*rotorForce)//magnitude of rotor initially this direction
+					*cos(osg::DegreesToRadians(helicopterOrientation.z_theta))//transform for when heli turns
+					+(sin(osg::DegreesToRadians(helicopterOrientation.x_theta))*rotorForce)//magnitude of rotor initially in other direction
+					*sin(osg::DegreesToRadians(helicopterOrientation.z_theta))//transform for when heli turns
+					- frictionScalar*modelVelocity.x();//friction portion
+	float ayForce = -(((sin(osg::DegreesToRadians(helicopterOrientation.x_theta))*rotorForce)//same as for axForce
+					*cos(osg::DegreesToRadians(helicopterOrientation.z_theta))
+					+(sin(osg::DegreesToRadians(helicopterOrientation.y_theta))*rotorForce)
+					*sin(osg::DegreesToRadians(helicopterOrientation.z_theta)))
+					- frictionScalar*modelVelocity.y());
+	float azForce = cos(osg::DegreesToRadians(helicopterOrientation.x_theta))*cos(osg::DegreesToRadians(helicopterOrientation.y_theta))*rotorForce + aGrav*mass - frictionScalar*modelVelocity.z();
 
 	float xAcc = axForce/mass;
 	float yAcc = ayForce/mass;
 	float zAcc = azForce/mass;
 
-	float delta = viewer.getFrameStamp()->getReferenceTime() - last;
+	float delta = 0.0235; //viewer.getFrameStamp()->getReferenceTime() - last;
 	last = viewer.getFrameStamp()->getReferenceTime();
 
 	float xPos = modelPosition.x() + (modelVelocity.x()*delta) + (0.5)*xAcc*(pow(delta,2));
@@ -349,8 +374,8 @@ void Render::updateGamePlay()
 	float zVel = (modelVelocity.z() + zAcc*delta)*0.99999999999;
 
 	if(zPos < 1){  //these ones should be radius of ball
-		if(zVel < -3)
-			crash=true;//crash
+		if(zVel < -3)//THIS VALUE IS SUBJECT TO CHANGE
+			crash=true;
 
 		zPos = 1;
 		zVel *= 0.4;
