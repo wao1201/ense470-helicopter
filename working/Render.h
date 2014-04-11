@@ -34,6 +34,7 @@ class Render{
   private:
 	  osg::ref_ptr<osg::PositionAttitudeTransform> helicopterTransform;
 	  osg::ref_ptr<osg::PositionAttitudeTransform> groundTransform;
+	  osg::ref_ptr<osg::PositionAttitudeTransform> cowTransform;///////////////////////////
 	  osg::ref_ptr<osg::PositionAttitudeTransform> tor1Tr;
 	  osg::ref_ptr<osg::PositionAttitudeTransform> tor2Tr;
 	  osg::ref_ptr<osg::PositionAttitudeTransform> tor3Tr;
@@ -54,6 +55,7 @@ class Render{
 	  osg::Vec3d cowPosition;
 	  osg::Vec3f cowVelocity;
 	  bool fire;
+	  int fireTimer;
 
 
   public:
@@ -72,7 +74,7 @@ class Render{
 	  void setzero();
 	  void centerjoystick();
 
-	  void isFire();
+	  void setFire(){fire=true;}
 
 	  void roll(float angle);
 	  void pitch(float angle);

@@ -80,7 +80,7 @@ bool ModelController::handle( const osgGA::GUIEventAdapter& ea,
 				gameRender->toggleFriction();
 				break;
 			case 's':
-				gameRender->isFire(); // shooot the missile
+				gameRender->setFire(); // shooot the missile
 				break;
 
 			}

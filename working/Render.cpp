@@ -106,14 +106,16 @@ void Render::Game_Play(){
 
 	helicopterThrust = osg::Vec3f(0.0, 0.0, 0.0);
 
+	
 	// missile
-	osg::ref_ptr<osg::PositionAttitudeTransform> cowTransform = new osg::PositionAttitudeTransform;
+	cowTransform = new osg::PositionAttitudeTransform;
 	cowTransform->addChild(flycow.get());
 	cowTransform->setPosition(modelPosition);
-	cowTransform->setScale(osg::Vec3(0.1f, 0.1f, 0.1f));
+	cowTransform->setScale(osg::Vec3(0.3f, 0.3f, 0.3f));
 	cowPosition.set(helicopterTransform->getPosition());
 	cowVelocity.set(osg::Vec3f(0,0,0));
 	fire = false; // default missile setting
+	
 
 	//hud
 	hudCamera = hud.getHudCamera();
@@ -325,12 +327,6 @@ void Render::yaw(float angle)
 	helicopterOrientation.z_theta = fmod(helicopterOrientation.z_theta,360);
 }
 
-	// m3: missile
-void Render::isFire()
-{
-	fire = true;
-}
-
 void Render::updateGamePlay()
 {
 	if (Render::detectCollision(osg::BoundingSphere(helicopterTransform->getBound()), osg::BoundingSphere(tor1Tr->getBound())))
@@ -398,10 +394,6 @@ void Render::updateGamePlay()
 
 	hud.crashed(crash);
 
-	//m3: missile
-	if(fire = true){
-	}
-
 
 	Logger* logger = Logger::getInstance();
 	string something = f2s(xPos);
@@ -413,6 +405,17 @@ void Render::updateGamePlay()
 	modelPosition.set(osg::Vec3d(xPos, yPos, zPos));
 	modelVelocity.set(osg::Vec3f(xVel, yVel, zVel));
 	helicopterTransform->setPosition(modelPosition);
+
+	//m3: missile
+	if(fire == true){
+		std::cout<<"asdfasdfgqwer";
+		cowVelocity.set(osg::Vec3f(0,0,-9.8*delta*0.99999999999));
+
+	}
+	else
+	{
+		cowTransform->setPosition(modelPosition);
+	}
 
 	// orientation
 	helicopterTransform->setAttitude( 	 	
