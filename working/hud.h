@@ -23,6 +23,8 @@ private:
 	osgText::Text * helpinfo2;
 	osgText::Text * crash;
 
+	bool crashFlag;
+
 public:
     Hud();
 

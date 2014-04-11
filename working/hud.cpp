@@ -81,8 +81,6 @@ void Hud::initializeHudText()
     helpinfo2->setPosition(osg::Vec3(0,980,0));
 	hudGeode->addDrawable(helpinfo2);
 
-	
-
     camera->addChild(hudGeode);
 
 }
@@ -196,6 +194,7 @@ void Hud::crashed(bool isCrash)
 {
 	if (isCrash)
 	{
+	hudGeode->removeDrawable(crash);
 	crash = new osgText::Text;
     crash->setFont(osgText::readFontFile("fonts/vera.ttf"));
     crash->setColor(osg::Vec4(255,0,0,1.0f));
@@ -204,10 +203,13 @@ void Hud::crashed(bool isCrash)
     crash->setText("Crashed !!!");
     crash->setPosition(osg::Vec3(410,510,0));
 	hudGeode->addDrawable(crash);
+	crashFlag = true;
 	}
-
 	else
+	{
 		hudGeode->removeDrawable(crash);
+		crashFlag = false;
+	}
 
 }
 
